@@ -1,81 +1,21 @@
+// Copyright © 2016 blacktop <https://github.com/blacktop>
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 package main
 
-import (
-	"fmt"
-	"os"
-	"runtime"
-	"strconv"
-
-	log "github.com/Sirupsen/logrus"
-	"github.com/urfave/cli"
-
-	"github.com/maliceio/malice/commands"
-	"github.com/maliceio/malice/config"
-	"github.com/maliceio/malice/malice/logger"
-	"github.com/maliceio/malice/plugins"
-	"github.com/maliceio/malice/version"
-)
-
-func init() {
-	logger.Init()
-	setDebugOutputLevel()
-	config.Load()
-	plugins.Load()
-}
-
-func setDebugOutputLevel() {
-	for _, f := range os.Args {
-		if f == "-D" || f == "--debug" || f == "-debug" {
-			log.SetLevel(log.DebugLevel)
-		}
-	}
-
-	debugEnv := os.Getenv("MALICE_DEBUG")
-	if debugEnv != "" {
-		showDebug, err := strconv.ParseBool(debugEnv)
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "Error parsing boolean value from MALICE_DEBUG: %s\n", err)
-			os.Exit(1)
-		}
-		if showDebug {
-			log.SetLevel(log.DebugLevel)
-		}
-	}
-}
-
-// Init initializes Malice
-func Init() {}
+import "github.com/maliceio/malice/cmd"
 
 func main() {
-	log.Debugf("Using %d PROCS", runtime.NumCPU())
-	runtime.GOMAXPROCS(runtime.NumCPU())
-
-	Init()
-	// setDebugOutputLevel()
-	cli.AppHelpTemplate = commands.AppHelpTemplate
-	cli.CommandHelpTemplate = commands.CommandHelpTemplate
-	app := cli.NewApp()
-
-	app.Name = "malice"
-	app.Author = "blacktop"
-	app.Email = "https://github.com/blacktop"
-
-	app.Commands = commands.Commands
-	app.CommandNotFound = commands.CmdNotFound
-	app.Usage = "Open Source Malware Analysis Framework"
-	app.Version = version.GetHumanVersion()
-	app.Copyright = "Copyright (c) 2013 - 2016 'blacktop' Joshua Maine"
-	// app.EnableBashCompletion = true
-
-	log.Debug("Malice Version: ", app.Version)
-
-	app.Flags = []cli.Flag{
-		cli.BoolFlag{
-			EnvVar: "MALICE_DEBUG",
-			Name:   "debug, D",
-			Usage:  "Enable debug mode",
-		},
-	}
-
-	app.Run(os.Args)
+	cmd.Execute()
 }

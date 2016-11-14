@@ -7,6 +7,7 @@ import (
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/fatih/structs"
+	"github.com/maliceio/go-plugin-utils/utils"
 	"github.com/maliceio/malice/config"
 	"github.com/maliceio/malice/malice/database/elasticsearch"
 	"github.com/maliceio/malice/malice/docker/client"
@@ -14,7 +15,6 @@ import (
 	er "github.com/maliceio/malice/malice/errors"
 	"github.com/maliceio/malice/malice/persist"
 	"github.com/maliceio/malice/plugins"
-	"github.com/maliceio/malice/utils"
 )
 
 func cmdScan(path string, logs bool) error {

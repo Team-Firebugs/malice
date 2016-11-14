@@ -4,13 +4,13 @@ import (
 	"fmt"
 
 	log "github.com/Sirupsen/logrus"
+	"github.com/maliceio/go-plugin-utils/utils"
 	"github.com/maliceio/malice/config"
 	"github.com/maliceio/malice/malice/database/elasticsearch"
 	"github.com/maliceio/malice/malice/docker/client"
 	"github.com/maliceio/malice/malice/docker/client/container"
 	er "github.com/maliceio/malice/malice/errors"
 	"github.com/maliceio/malice/plugins"
-	"github.com/maliceio/malice/utils"
 )
 
 func cmdLookUp(hash string, jsonOut bool, logs bool) (string, error) {
