@@ -17,7 +17,7 @@ import (
 	"github.com/maliceio/malice/malice/docker/client/container"
 	er "github.com/maliceio/malice/malice/errors"
 	"github.com/maliceio/malice/malice/persist"
-	r "gopkg.in/dancannon/gorethink.v2"
+	r "gopkg.in/gorethink/gorethink.v3"
 )
 
 // RethinkAddr RethinkDB address to user for connections

@@ -22,41 +22,11 @@ func arreq(a, b []string) bool {
 	return false
 }
 
+// unescape unescapes a tilde escaped string.
+//
+// It's dumb looking, but it benches faster than strings.NewReplacer
 func unescape(s string) string {
-	n := strings.Count(s, "~")
-	if n == 0 {
-		return s
-	}
-
-	t := make([]byte, len(s)-n+1) // remove one char per ~
-	w := 0
-	start := 0
-	for i := 0; i < n; i++ {
-		j := start + strings.Index(s[start:], "~")
-		w += copy(t[w:], s[start:j])
-		if len(s) < j+2 {
-			t[w] = '~'
-			w++
-			break
-		}
-		c := s[j+1]
-		switch c {
-		case '0':
-			t[w] = '~'
-			w++
-		case '1':
-			t[w] = '/'
-			w++
-		default:
-			t[w] = '~'
-			w++
-			t[w] = c
-			w++
-		}
-		start = j + 2
-	}
-	w += copy(t[w:], s[start:])
-	return string(t[0:w])
+	return strings.Replace(strings.Replace(s, "~0", "~", -1), "~1", "/", -1)
 }
 
 func parsePointer(s string) []string {
@@ -73,26 +43,21 @@ func parsePointer(s string) []string {
 	return a
 }
 
-func escape(s string, out []rune) []rune {
-	for _, c := range s {
-		switch c {
-		case '/':
-			out = append(out, '~', '1')
-		case '~':
-			out = append(out, '~', '0')
-		default:
-			out = append(out, c)
-		}
-	}
-	return out
-}
-
 func encodePointer(p []string) string {
 	out := make([]rune, 0, 64)
 
 	for _, s := range p {
 		out = append(out, '/')
-		out = escape(s, out)
+		for _, c := range s {
+			switch c {
+			case '/':
+				out = append(out, '~', '1')
+			case '~':
+				out = append(out, '~', '0')
+			default:
+				out = append(out, c)
+			}
+		}
 	}
 	return string(out)
 }
@@ -133,7 +98,7 @@ func Find(data []byte, path string) ([]byte, error) {
 
 	offset := 0
 	beganLiteral := 0
-	current := make([]string, 0, 32)
+	current := []string{}
 	for {
 		if offset >= len(data) {
 			break

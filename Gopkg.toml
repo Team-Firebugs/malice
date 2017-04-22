@@ -1,0 +1,96 @@
+
+[[dependencies]]
+  name = "github.com/BurntSushi/toml"
+  version = "v0.3.0"
+
+[[dependencies]]
+  name = "github.com/Sirupsen/logrus"
+  version = "^v0.11"
+
+[[dependencies]]
+  branch = "master"
+  name = "github.com/cloudflare/cfssl"
+
+[[dependencies]]
+  name = "github.com/crackcomm/go-clitable"
+  revision = "53bcff2fea363f918b5fc960c654a5fb4b3f9950"
+
+[[dependencies]]
+  branch = "master"
+  name = "github.com/docker/distribution"
+
+[[dependencies]]
+  branch = "master"
+  name = "github.com/docker/docker"
+
+[[dependencies]]
+  branch = "master"
+  name = "github.com/docker/go-connections"
+
+[[dependencies]]
+  branch = "master"
+  name = "github.com/docker/go-units"
+
+[[dependencies]]
+  name = "github.com/dustin/go-jsonpointer"
+  revision = "2efc9fef1d9421a8d252a32e20beb10cecd2bbca"
+
+[[dependencies]]
+  branch = "master"
+  name = "github.com/fatih/structs"
+
+[[dependencies]]
+  name = "github.com/fsnotify/fsnotify"
+  version = "v1.4.2"
+
+[[dependencies]]
+  name = "github.com/gorilla/mux"
+  version = "v1.3.0"
+
+[[dependencies]]
+  name = "github.com/jordan-wright/email"
+  revision = "fd703108daeb23d77c124d12978e9b6c4f28f034"
+
+[[dependencies]]
+  branch = "master"
+  name = "github.com/maliceio/go-plugin-utils"
+
+[[dependencies]]
+  name = "github.com/mattn/go-runewidth"
+  version = ">=0.0.1, <1.0.0"
+
+[[dependencies]]
+  name = "github.com/moby/moby"
+  version = "v17.04.0-ce"
+
+[[dependencies]]
+  name = "github.com/parnurzeal/gorequest"
+  version = "v0.2.15"
+
+[[dependencies]]
+  branch = "master"
+  name = "github.com/spf13/cobra"
+
+[[dependencies]]
+  branch = "master"
+  name = "github.com/spf13/viper"
+
+[[dependencies]]
+  name = "github.com/urfave/cli"
+  revision = "9a18ffad6c548ca4d458d4c30a8aa4d181cf92fa"
+
+[[dependencies]]
+  name = "golang.org/x/net"
+  revision = "07b51741c1d6423d4a6abab1c49940ec09cb1aaf"
+
+[[dependencies]]
+  name = "gopkg.in/dancannon/gorethink.v3"
+  version = "^3.0"
+
+[[dependencies]]
+  name = "gopkg.in/natefinch/lumberjack.v2"
+  revision = "514cbda263a734ae8caac038dadf05f8f3f9f738"
+
+[[dependencies]]
+  name = "gopkg.in/olivere/elastic.v5"
+  version = "^5.0.35"
