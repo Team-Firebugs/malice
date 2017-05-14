@@ -4,7 +4,7 @@ NOTES
 ## Vault
 
 ```bash
-$ docker run -d --name vault --restart unless-stopped --cap-add=IPC_LOCK -e 'VAULT_LOCAL_CONFIG={"backend": {"file": {"path": "/vault/file"}}, "listener": {"tcp": {"tls_disable": "1"}}, "default_lease_ttl": "168h", "max_lease_ttl": "720h"}' -p 8200:8200 vault server
+$ docker run -d --name vault --restart unless-stopped --cap-add=IPC_LOCK -e 'VAULT_LOCAL_CONFIG={"backend": {"file": {"path": "/vault/file"}}, "listener": {"tcp": {"address":"0.0.0.0:8200", "tls_disable": "1"}}, "default_lease_ttl": "168h", "max_lease_ttl": "720h"}' -p 8200:8200 vault server
 ```
 
 ```bash
