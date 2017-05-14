@@ -84,30 +84,6 @@ func newMaliceCommand(maliceCli *command.MaliceCli) *cobra.Command {
 	return cmd
 }
 
-func setValidateArgs(maliceCli *command.MaliceCli, cmd *cobra.Command, flags *pflag.FlagSet, opts *cliflags.ClientOptions) {
-	// The Args is handled by ValidateArgs in cobra, which does not allows a pre-hook.
-	// As a result, here we replace the existing Args validation func to a wrapper,
-	// where the wrapper will check to see if the feature is supported or not.
-	// The Args validation error will only be returned if the feature is supported.
-	visitAll(cmd, func(ccmd *cobra.Command) {
-		// if there is no tags for a command or any of its parent,
-		// there is no need to wrap the Args validation.
-		if !hasTags(ccmd) {
-			return
-		}
-
-		// if ccmd.Args == nil {
-		// 	return
-		// }
-
-		cmdArgs := cli.NoArgs
-		ccmd.Args = func(cmd *cobra.Command, args []string) error {
-			initializeMaliceCli(maliceCli, flags, opts)
-			return cmdArgs(cmd, args)
-		}
-	})
-}
-
 func initializeMaliceCli(maliceCli *command.MaliceCli, flags *pflag.FlagSet, opts *cliflags.ClientOptions) {
 	if maliceCli.Client() == nil { // when using --help, PersistentPreRun is not called, so initialization is needed.
 		// flags must be the top-level command flags, not cmd.Flags()
@@ -115,25 +91,6 @@ func initializeMaliceCli(maliceCli *command.MaliceCli, flags *pflag.FlagSet, opt
 		malicePreRun(opts)
 		maliceCli.Initialize(opts)
 	}
-}
-
-// visitAll will traverse all commands from the root.
-// This is different from the VisitAll of cobra.Command where only parents
-// are checked.
-func visitAll(root *cobra.Command, fn func(*cobra.Command)) {
-	for _, cmd := range root.Commands() {
-		fmt.Println(cmd)
-		visitAll(cmd, fn)
-	}
-	fn(root)
-}
-
-func noArgs(cmd *cobra.Command, args []string) error {
-	if len(args) == 0 {
-		return nil
-	}
-	return fmt.Errorf(
-		"malice: '%s' is not a malice command.\nSee 'malice --help'", args[0])
 }
 
 func main() {
@@ -174,48 +131,4 @@ func malicePreRun(opts *cliflags.ClientOptions) {
 	if opts.Common.Debug {
 		// debug.Enable()
 	}
-}
-
-func isSupported(cmd *cobra.Command) error {
-	// clientVersion := details.Client().ClientVersion()
-	// osType := details.ServerInfo().OSType
-
-	// errs := []string{}
-
-	// cmd.Flags().VisitAll(func(f *pflag.Flag) {
-	// 	if f.Changed {
-	// 		if !isVersionSupported(f, clientVersion) {
-	// 			errs = append(errs, fmt.Sprintf("\"--%s\" requires API version %s, but the Docker daemon API version is %s", f.Name, getFlagAnnotation(f, "version"), clientVersion))
-	// 			return
-	// 		}
-	// 		if !isOSTypeSupported(f, osType) {
-	// 			errs = append(errs, fmt.Sprintf("\"--%s\" requires the Docker daemon to run on %s, but the Docker daemon is running on %s", f.Name, getFlagAnnotation(f, "ostype"), osType))
-	// 			return
-	// 		}
-	// 		if _, ok := f.Annotations["experimental"]; ok && !hasExperimental {
-	// 			errs = append(errs, fmt.Sprintf("\"--%s\" is only supported on a Docker daemon with experimental features enabled", f.Name))
-	// 		}
-	// 	}
-	// })
-	// if len(errs) > 0 {
-	// 	return errors.New(strings.Join(errs, "\n"))
-	// }
-
-	return nil
-}
-
-// hasTags return true if any of the command's parents has tags
-func hasTags(cmd *cobra.Command) bool {
-	for curr := cmd; curr != nil; curr = curr.Parent() {
-		if len(curr.Tags) > 0 {
-			return true
-		}
-	}
-
-	return false
-}
-
-// StdStreams returns the standard streams (stdin, stdout, stderr).
-func StdStreams() (stdIn io.ReadCloser, stdOut, stdErr io.Writer) {
-	return os.Stdin, os.Stdout, os.Stderr
 }
