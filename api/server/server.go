@@ -8,12 +8,12 @@ import (
 	"strings"
 
 	"github.com/Sirupsen/logrus"
-	"github.com/docker/docker/api/errors"
-	"github.com/docker/docker/api/server/httputils"
-	"github.com/docker/docker/api/server/middleware"
-	"github.com/docker/docker/api/server/router"
-	"github.com/docker/docker/dockerversion"
 	"github.com/gorilla/mux"
+	"github.com/maliceio/malice/api/errors"
+	"github.com/maliceio/malice/api/server/httputils"
+	"github.com/maliceio/malice/api/server/middleware"
+	"github.com/maliceio/malice/api/server/router"
+	"github.com/moby/moby/dockerversion"
 	"golang.org/x/net/context"
 )
 

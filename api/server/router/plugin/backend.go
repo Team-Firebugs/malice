@@ -1,26 +1,15 @@
 package plugin
 
 import (
-	"io"
-	"net/http"
-
-	"github.com/docker/distribution/reference"
-	enginetypes "github.com/docker/docker/api/types"
-	"github.com/docker/docker/api/types/filters"
-	"golang.org/x/net/context"
+	"github.com/maliceio/malice/api/types"
+	"github.com/maliceio/malice/api/types/filters"
 )
 
 // Backend for Plugin
 type Backend interface {
-	Disable(name string, config *enginetypes.PluginDisableConfig) error
-	Enable(name string, config *enginetypes.PluginEnableConfig) error
-	List(filters.Args) ([]enginetypes.Plugin, error)
-	Inspect(name string) (*enginetypes.Plugin, error)
-	Remove(name string, config *enginetypes.PluginRmConfig) error
-	Set(name string, args []string) error
-	Privileges(ctx context.Context, ref reference.Named, metaHeaders http.Header, authConfig *enginetypes.AuthConfig) (enginetypes.PluginPrivileges, error)
-	Pull(ctx context.Context, ref reference.Named, name string, metaHeaders http.Header, authConfig *enginetypes.AuthConfig, privileges enginetypes.PluginPrivileges, outStream io.Writer) error
-	Push(ctx context.Context, name string, metaHeaders http.Header, authConfig *enginetypes.AuthConfig, outStream io.Writer) error
-	Upgrade(ctx context.Context, ref reference.Named, name string, metaHeaders http.Header, authConfig *enginetypes.AuthConfig, privileges enginetypes.PluginPrivileges, outStream io.Writer) error
-	CreateFromContext(ctx context.Context, tarCtx io.ReadCloser, options *enginetypes.PluginCreateOptions) error
+	Disable(name string, config *types.Plugin) error
+	Enable(name string, config *types.Plugin) error
+	List(filters.Args) ([]types.Plugin, error)
+	Inspect(name string) (*types.Plugin, error)
+	Remove(name string, config *types.Plugin) error
 }
